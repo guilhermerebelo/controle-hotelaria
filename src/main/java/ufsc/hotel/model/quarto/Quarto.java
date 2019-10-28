@@ -1,7 +1,5 @@
 package ufsc.hotel.model.quarto;
 
-import ufsc.hotel.model.tipoquarto.TipoQuarto;
-
 import javax.persistence.*;
 
 @Entity
@@ -17,8 +15,8 @@ public class Quarto {
     @Column(name = "CODIGO_QUARTO")
     private String codigo;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_TIPO_QUARTO")
-    private TipoQuarto tipoQuarto;
+//    @ManyToOne
+//    @JoinColumn(name = "ID_TIPO_QUARTO")
+//    private TipoQuarto tiposQuarto;
 
 }

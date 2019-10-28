@@ -1,10 +1,7 @@
 package ufsc.hotel.model.tipoquarto;
 
-import ufsc.hotel.model.produto.Produto;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Table(name = "TIPO_QUARTO")
@@ -22,6 +19,6 @@ public class TipoQuarto {
     @Column(name = "VALOR")
     private BigDecimal diaria;
 
-    @ManyToMany(mappedBy = "tiposQuarto")
-    private List<Produto> produtos;
+//    @ManyToMany(mappedBy = "tiposQuarto")
+//    private List<Produto> produtos;
 }

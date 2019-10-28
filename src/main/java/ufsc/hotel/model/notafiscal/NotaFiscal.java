@@ -1,7 +1,5 @@
 package ufsc.hotel.model.notafiscal;
 
-import ufsc.hotel.model.locacao.Locacao;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -15,10 +13,11 @@ public class NotaFiscal {
     @Column(name = "ID")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "ID_LOCACAO")
-    private Locacao locacao;
-
     @Column(name = "DATA")
-    LocalDate data;
+    private LocalDate data;
+
+//    @OneToOne
+//    @JoinColumn(name = "ID_LOCACAO")
+//    private Locacao locacao;
+
 }

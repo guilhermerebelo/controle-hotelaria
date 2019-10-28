@@ -2,6 +2,7 @@ package ufsc.hotel.model.locacao;
 
 import ufsc.hotel.model.funcionario.Funcionario;
 import ufsc.hotel.model.hospede.Hospede;
+import ufsc.hotel.model.notafiscal.NotaFiscal;
 import ufsc.hotel.model.pessoa.PessoaFisica;
 import ufsc.hotel.model.produto.Produto;
 import ufsc.hotel.model.quarto.Quarto;
@@ -27,26 +28,30 @@ public class Locacao {
     private LocalDate dataFinal;
 
     @ManyToOne
-    @JoinColumn(name = "ID_QUARTO", referencedColumnName = "id")
+    @JoinColumn(name = "ID_QUARTO")
     private Quarto quarto;
 
     @ManyToOne
-    @JoinColumn(name = "ID_HOSPEDE", referencedColumnName = "id")
+    @JoinColumn(name = "ID_HOSPEDE")
     private Hospede hospede;
 
     @ManyToOne
-    @JoinColumn(name = "ID_PAGANTE", referencedColumnName = "id")
+    @JoinColumn(name = "ID_PAGANTE")
     private PessoaFisica pagante;
 
     @ManyToOne
-    @JoinColumn(name = "ID_FUNCIONARIO_INICIO_LOCACAO", referencedColumnName = "id")
-    private Funcionario funcionarioInicioLocacao;
+    @JoinColumn(name = "ID_FUNCIONARIO_INICIO_LOCACAO")
+    private Funcionario funcionarioIniciouLocacao;
 
     @ManyToOne
-    @JoinColumn(name = "ID_FUNCIONARIO_FINAL_LOCACAO", referencedColumnName = "id")
-    private Hospede funcionarioFinalLocacao;
+    @JoinColumn(name = "ID_FUNCIONARIO_FINAL_LOCACAO")
+    private Funcionario funcionarioFinalizouLocacao;
 
-    @ManyToMany //ver a tabela intermediaria
-    @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "id")
+    //TODO tabela intermediaria
+    @ManyToMany
+    @JoinColumn(name = "ID_PRODUTO")
     private List<Produto> produtoConsumidos;
+
+    @OneToOne(mappedBy = "locacao")
+    private NotaFiscal notaFiscal;
 }

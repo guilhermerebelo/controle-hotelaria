@@ -18,7 +18,7 @@ public class Quarto {
     private String codigo;
 
     @ManyToOne
-    @JoinColumn(name = "ID_TIPO_QUARTO", referencedColumnName = "id")
+    @JoinColumn(name = "ID_TIPO_QUARTO")
     private TipoQuarto tipoQuarto;
 
 }

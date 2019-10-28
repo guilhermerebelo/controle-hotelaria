@@ -20,7 +20,6 @@ public class Hotel implements Serializable {
     @Column(name = "NOME")
     private String nome;
 
-    @OneToMany
-    @JoinColumn(name = "ID_HOTEL")
+    @OneToMany(mappedBy = "hotel")
     private List<Funcionario> funcionarios = new ArrayList<>();
 }

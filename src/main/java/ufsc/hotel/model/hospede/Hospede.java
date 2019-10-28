@@ -15,6 +15,6 @@ public class Hospede {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "ID_PESSOA_FISICA", referencedColumnName = "id")
+    @JoinColumn(name = "ID_PESSOA_FISICA")
     private PessoaFisica pessoaFisica;
 }

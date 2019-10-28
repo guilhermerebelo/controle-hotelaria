@@ -1,5 +1,6 @@
 package ufsc.hotel.model.funcionario;
 
+import ufsc.hotel.model.hotel.Hotel;
 import ufsc.hotel.model.pessoa.PessoaFisica;
 
 import javax.persistence.*;
@@ -15,11 +16,11 @@ public class Funcionario {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "ID_PESSOA_FISICA", referencedColumnName = "id")
+    @JoinColumn(name = "ID_PESSOA_FISICA")
     private PessoaFisica pessoaFisica;
 
-    //ver como fazer
-    @Column(name = "ID_HOTEL")
-    private Long idHotel;
+    @ManyToOne
+    @JoinColumn(name = "ID_HOTEL")
+    private Hotel hotel;
 
 }

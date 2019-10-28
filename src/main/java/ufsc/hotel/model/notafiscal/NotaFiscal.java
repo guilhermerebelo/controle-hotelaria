@@ -15,7 +15,7 @@ public class NotaFiscal {
     @Column(name = "ID")
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "ID_LOCACAO")
     private Locacao locacao;
 

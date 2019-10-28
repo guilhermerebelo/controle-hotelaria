@@ -22,6 +22,6 @@ public class TipoQuarto {
     @Column(name = "VALOR")
     private BigDecimal diaria;
 
-    @OneToMany(mappedBy  = "tipoQuarto")
+    @ManyToMany(mappedBy = "tiposQuarto")
     private List<Produto> produtos;
 }

@@ -1,5 +1,7 @@
 package ufsc.hotel.model.locacao;
 
+import ufsc.hotel.model.notafiscal.NotaFiscal;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -44,6 +46,6 @@ public class Locacao {
 //    @JoinColumn(name = "ID_PRODUTO")
 //    private List<Produto> produtoConsumidos;
 //
-//    @OneToOne(mappedBy = "locacao")
-//    private NotaFiscal notaFiscal;
+    @OneToOne(mappedBy = "locacao")
+    private NotaFiscal notaFiscal;
 }

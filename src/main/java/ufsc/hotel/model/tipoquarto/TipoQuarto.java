@@ -4,6 +4,7 @@ import ufsc.hotel.model.produto.Produto;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,11 @@ public class TipoQuarto {
     @Column(name = "VALOR")
     private BigDecimal diaria;
 
-    @ManyToMany(mappedBy = "tiposQuarto")
-    private List<Produto> produtos;
+    @ManyToMany
+    @JoinTable(
+            name = "TIPO_QUARTO_PRODUTO",
+            joinColumns = @JoinColumn(name = "ID_TIPO_QUARTO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_PRODUTO")
+    )
+    private List<Produto> produtos = new ArrayList<>();
 }

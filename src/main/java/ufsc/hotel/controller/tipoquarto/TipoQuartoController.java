@@ -3,7 +3,6 @@ package ufsc.hotel.controller.tipoquarto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ufsc.hotel.model.tipoquarto.TipoQuarto;
 import ufsc.hotel.model.tipoquarto.TipoQuartoRepository;
@@ -11,7 +10,7 @@ import ufsc.hotel.model.tipoquarto.TipoQuartoRepository;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @Transactional
 @RequestMapping("tipo-quarto")
 public class TipoQuartoController {

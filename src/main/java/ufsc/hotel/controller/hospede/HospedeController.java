@@ -3,7 +3,6 @@ package ufsc.hotel.controller.hospede;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ufsc.hotel.model.hospede.Hospede;
 import ufsc.hotel.model.hospede.HospedeRepository;
@@ -11,7 +10,7 @@ import ufsc.hotel.model.hospede.HospedeRepository;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @Transactional
 @RequestMapping("hospede")
 public class HospedeController {

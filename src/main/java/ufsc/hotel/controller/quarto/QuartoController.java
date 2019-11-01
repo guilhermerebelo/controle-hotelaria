@@ -3,7 +3,6 @@ package ufsc.hotel.controller.quarto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ufsc.hotel.model.quarto.Quarto;
 import ufsc.hotel.model.quarto.QuartoRepository;
@@ -11,7 +10,7 @@ import ufsc.hotel.model.quarto.QuartoRepository;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @Transactional
 @RequestMapping("quarto")
 public class QuartoController {

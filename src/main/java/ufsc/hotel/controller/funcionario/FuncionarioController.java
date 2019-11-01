@@ -3,7 +3,6 @@ package ufsc.hotel.controller.funcionario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ufsc.hotel.model.funcionario.Funcionario;
 import ufsc.hotel.model.funcionario.FuncionarioRepository;
@@ -11,7 +10,7 @@ import ufsc.hotel.model.funcionario.FuncionarioRepository;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @Transactional
 @RequestMapping("funcionario")
 public class FuncionarioController {

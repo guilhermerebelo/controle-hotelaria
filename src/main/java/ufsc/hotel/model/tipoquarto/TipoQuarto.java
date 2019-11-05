@@ -30,4 +30,36 @@ public class TipoQuarto {
             inverseJoinColumns = @JoinColumn(name = "ID_PRODUTO")
     )
     private List<Produto> produtos = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public BigDecimal getDiaria() {
+        return diaria;
+    }
+
+    public void setDiaria(BigDecimal diaria) {
+        this.diaria = diaria;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
 }

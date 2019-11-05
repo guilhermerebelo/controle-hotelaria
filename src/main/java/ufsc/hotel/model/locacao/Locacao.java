@@ -58,4 +58,84 @@ public class Locacao {
 
     @OneToOne(mappedBy = "locacao")
     private NotaFiscal notaFiscal;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDate getDataInicial() {
+        return dataInicial;
+    }
+
+    public void setDataInicial(LocalDate dataInicial) {
+        this.dataInicial = dataInicial;
+    }
+
+    public LocalDate getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(LocalDate dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
+    public Quarto getQuarto() {
+        return quarto;
+    }
+
+    public void setQuarto(Quarto quarto) {
+        this.quarto = quarto;
+    }
+
+    public Hospede getHospede() {
+        return hospede;
+    }
+
+    public void setHospede(Hospede hospede) {
+        this.hospede = hospede;
+    }
+
+    public PessoaFisica getPagante() {
+        return pagante;
+    }
+
+    public void setPagante(PessoaFisica pagante) {
+        this.pagante = pagante;
+    }
+
+    public Funcionario getFuncionarioIniciouLocacao() {
+        return funcionarioIniciouLocacao;
+    }
+
+    public void setFuncionarioIniciouLocacao(Funcionario funcionarioIniciouLocacao) {
+        this.funcionarioIniciouLocacao = funcionarioIniciouLocacao;
+    }
+
+    public Funcionario getFuncionarioFinalizouLocacao() {
+        return funcionarioFinalizouLocacao;
+    }
+
+    public void setFuncionarioFinalizouLocacao(Funcionario funcionarioFinalizouLocacao) {
+        this.funcionarioFinalizouLocacao = funcionarioFinalizouLocacao;
+    }
+
+    public List<Produto> getProdutoConsumidos() {
+        return produtoConsumidos;
+    }
+
+    public void setProdutoConsumidos(List<Produto> produtoConsumidos) {
+        this.produtoConsumidos = produtoConsumidos;
+    }
+
+    public NotaFiscal getNotaFiscal() {
+        return notaFiscal;
+    }
+
+    public void setNotaFiscal(NotaFiscal notaFiscal) {
+        this.notaFiscal = notaFiscal;
+    }
 }

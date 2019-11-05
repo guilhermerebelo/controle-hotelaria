@@ -19,6 +19,6 @@ public class Quarto {
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPO_QUARTO")
-    private TipoQuarto tiposQuarto;
+    private TipoQuarto tipoQuarto;
 
 }

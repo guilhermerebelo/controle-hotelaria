@@ -17,4 +17,20 @@ public class Hospede {
     @OneToOne
     @JoinColumn(name = "ID_PESSOA_FISICA")
     private PessoaFisica pessoaFisica;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
+    }
+
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
+    }
 }

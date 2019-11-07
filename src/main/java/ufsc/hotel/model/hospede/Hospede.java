@@ -3,11 +3,12 @@ package ufsc.hotel.model.hospede;
 import ufsc.hotel.model.pessoa.PessoaFisica;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "HOSPEDE")
 @SequenceGenerator(name = "HOSPEDE_GENERATOR", sequenceName = "HOSPEDE_SEQ", allocationSize = 1)
-public class Hospede {
+public class Hospede implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "HOSPEDE_GENERATOR")

@@ -1,12 +1,13 @@
 package ufsc.hotel.model.produto;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "PRODUTO")
 @SequenceGenerator(name = "PRODUTO_GENERATOR", sequenceName = "PRODUTO_SEQ", allocationSize = 1)
-public class Produto {
+public class Produto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUTO_GENERATOR")

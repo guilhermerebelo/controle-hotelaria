@@ -4,11 +4,12 @@ import ufsc.hotel.model.hotel.Hotel;
 import ufsc.hotel.model.pessoa.PessoaFisica;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "FUNCIONARIO")
 @SequenceGenerator(name = "FUNCIONARIO_GENERATOR", sequenceName = "FUNCIONARIO_SEQ", allocationSize = 1)
-public class Funcionario {
+public class Funcionario implements Serializable {
 
     @Id
     @Column

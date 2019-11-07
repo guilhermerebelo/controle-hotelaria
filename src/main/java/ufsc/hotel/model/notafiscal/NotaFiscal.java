@@ -3,12 +3,13 @@ package ufsc.hotel.model.notafiscal;
 import ufsc.hotel.model.locacao.Locacao;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "NOTA_FISCAL")
 @SequenceGenerator(name = "NOTA_FISCAL_GENERATOR", sequenceName = "NOTA_FISCAL_SEQ", allocationSize = 1)
-public class NotaFiscal {
+public class NotaFiscal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NOTA_FISCAL_GENERATOR")

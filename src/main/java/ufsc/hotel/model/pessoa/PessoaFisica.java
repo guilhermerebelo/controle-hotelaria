@@ -1,12 +1,13 @@
 package ufsc.hotel.model.pessoa;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "PESSOA_FISICA")
 @SequenceGenerator(name = "PESSOA_FISICA_GENERATOR", sequenceName = "PESSOA_FISICA_SEQ", allocationSize = 1)
-public class PessoaFisica {
+public class PessoaFisica implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PESSOA_FISICA_GENERATOR")

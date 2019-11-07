@@ -8,6 +8,7 @@ import ufsc.hotel.model.produto.Produto;
 import ufsc.hotel.model.quarto.Quarto;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "LOCACAO")
 @SequenceGenerator(name = "LOCACAO_GENERATOR", sequenceName = "LOCACAO_SEQ", allocationSize = 1)
-public class Locacao {
+public class Locacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LOCACAO_GENERATOR")

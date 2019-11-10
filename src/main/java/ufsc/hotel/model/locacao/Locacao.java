@@ -52,12 +52,12 @@ public class Locacao implements Serializable {
     @ManyToMany
     @JoinTable(
             name = "LOCACAO_PRODUTO",
-            joinColumns = @JoinColumn(name = "ID_LOCACAO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_PRODUTO")
+            joinColumns = @JoinColumn(name = "LOCACAO"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUTO")
     )
     private List<Produto> produtoConsumidos = new ArrayList<>();
 
-    @OneToOne(mappedBy = "locacao")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "locacao")
     private NotaFiscal notaFiscal;
 
     public Long getId() {

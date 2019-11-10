@@ -29,9 +29,20 @@ public class LocacaoService {
      *
      * */
 
-    private LocacaoRepository repository;
+//    private LocacaoRepository repository;
+//    private EntityManager em;
 
-    public LocacaoService(LocacaoRepository repository) {
-        this.repository = repository;
-    }
+//    public LocacaoService(LocacaoRepository repository, EntityManager em) {
+//        this.repository = repository;
+//        this.em = em;
+//    }
+//
+//    public BigDecimal mediaValorLocacaoMensal() {
+//        Query query = em.createQuery("select * formt a");
+//        query.getResultList();
+//    }
+//
+//    public BigDecimal mediaValorLocacaoMensal() {
+//        Query query = em.creat
+//    }
 }

@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 
 @RestController
 @Transactional
-@RequestMapping("funcionario")
+@RequestMapping("dashboard")
 public class DashboardController {
 
     private LocacaoService service;

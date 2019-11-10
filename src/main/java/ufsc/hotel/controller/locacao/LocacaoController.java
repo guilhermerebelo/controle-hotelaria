@@ -5,10 +5,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ufsc.hotel.model.locacao.Locacao;
+import ufsc.hotel.model.locacao.LocacaoDto;
 import ufsc.hotel.model.locacao.LocacaoRepository;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.ValidationException;
+import java.util.List;
 
 @RestController
 @Transactional
@@ -32,14 +35,29 @@ public class LocacaoController {
     }
 
     @PostMapping
-    public Locacao save(@Valid @RequestBody Locacao entity) {
-        return repository.save(entity);
+    public Locacao save(@Valid @RequestBody LocacaoDto entity) {
+        List<Locacao> locacaoEmAndamento =
+                repository.findLocacaoEmAndamento(entity.getDataInicial(), entity.getDataFinal(), entity.getQuarto());
+
+        //TODO remover as validações das controllers
+        if (!locacaoEmAndamento.isEmpty()) {
+            throw new ValidationException("Já existe uma locação em andamento para esse quarto");
+        }
+
+        return repository.save(entity.create());
     }
 
     @PutMapping("{id}")
-    public Locacao put(@PathVariable(value = "id") Long id,
-                       @Valid @RequestBody Locacao entity) {
-        return repository.save(entity);
+    public Locacao put(@PathVariable(value = "id") Long id, @Valid @RequestBody LocacaoDto entity) {
+        List<Locacao> locacaoEmAndamento =
+                repository.findLocacaoEmAndamento(entity.getDataInicial(), entity.getDataFinal(), entity.getQuarto());
+
+        //TODO remover as validações das controllers
+        if (!locacaoEmAndamento.isEmpty()) {
+            throw new ValidationException("Já existe uma locação em andamento para esse quarto");
+        }
+
+        return repository.save(entity.create());
     }
 
     @DeleteMapping("{id}")

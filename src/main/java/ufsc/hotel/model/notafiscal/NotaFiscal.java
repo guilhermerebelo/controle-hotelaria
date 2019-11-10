@@ -23,7 +23,6 @@ public class NotaFiscal implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "ID_LOCACAO")
-    @NotNull(message = "Locação é obrigatório")
     private Locacao locacao;
 
     public Long getId() {

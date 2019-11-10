@@ -1,6 +1,5 @@
 package ufsc.hotel.model.funcionario;
 
-import ufsc.hotel.model.hotel.Hotel;
 import ufsc.hotel.model.pessoa.PessoaFisica;
 
 import javax.persistence.*;
@@ -20,10 +19,6 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "ID_PESSOA_FISICA")
     private PessoaFisica pessoaFisica;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_HOTEL")
-    private Hotel hotel;
-
     public Long getId() {
         return id;
     }
@@ -38,13 +33,5 @@ public class Funcionario implements Serializable {
 
     public void setPessoaFisica(PessoaFisica pessoaFisica) {
         this.pessoaFisica = pessoaFisica;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
     }
 }

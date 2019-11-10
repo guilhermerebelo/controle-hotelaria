@@ -4,7 +4,6 @@ import ufsc.hotel.model.funcionario.Funcionario;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,8 +19,9 @@ public class Hotel implements Serializable {
     @Column(name = "NOME")
     private String nome;
 
-    @OneToMany(mappedBy = "hotel")
-    private List<Funcionario> funcionarios = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "HOTEL")
+    private List<Funcionario> funcionarios;
 
     public Long getId() {
         return id;

@@ -18,7 +18,7 @@ public class PessoaFisica implements Serializable {
     private String nome;
 
     @Column(name = "CPF")
-    private Integer cpf;
+    private String cpf;
 
     @Column(name = "DATA_NASCIMENTO")
     private LocalDate dataNascimento;
@@ -39,11 +39,11 @@ public class PessoaFisica implements Serializable {
         this.nome = nome;
     }
 
-    public Integer getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(Integer cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

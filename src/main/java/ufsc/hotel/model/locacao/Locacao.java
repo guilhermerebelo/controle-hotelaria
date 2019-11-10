@@ -8,6 +8,7 @@ import ufsc.hotel.model.produto.Produto;
 import ufsc.hotel.model.quarto.Quarto;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,29 +25,36 @@ public class Locacao implements Serializable {
     private Long id;
 
     @Column(name = "DATA_INICIAL")
+    @NotNull(message = "Data inicial é obrigatório")
     private LocalDate dataInicial;
 
     @Column(name = "DATA_FINAL")
+    @NotNull(message = "Data final é obrigatório")
     private LocalDate dataFinal;
 
     @ManyToOne
     @JoinColumn(name = "ID_QUARTO")
+    @NotNull(message = "Quarto é obrigatório")
     private Quarto quarto;
 
     @ManyToOne
     @JoinColumn(name = "ID_HOSPEDE")
+    @NotNull(message = "Hóspede é obrigatório")
     private Hospede hospede;
 
     @ManyToOne
     @JoinColumn(name = "ID_PAGANTE")
+    @NotNull(message = "Pagante é obrigatório")
     private PessoaFisica pagante;
 
     @ManyToOne
     @JoinColumn(name = "ID_FUNCIONARIO_INICIO_LOCACAO")
+    @NotNull(message = "Funcionário que fez a locação é obrigatório")
     private Funcionario funcionarioIniciouLocacao;
 
     @ManyToOne
     @JoinColumn(name = "ID_FUNCIONARIO_FINAL_LOCACAO")
+    @NotNull(message = "Funcionário que encerrou a locação é obrigatório")
     private Funcionario funcionarioFinalizouLocacao;
 
     @ManyToMany
@@ -58,6 +66,7 @@ public class Locacao implements Serializable {
     private List<Produto> produtoConsumidos = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "locacao")
+    @NotNull(message = "Nota fiscal é obrigatório")
     private NotaFiscal notaFiscal;
 
     public Long getId() {

@@ -3,6 +3,7 @@ package ufsc.hotel.model.hotel;
 import ufsc.hotel.model.funcionario.Funcionario;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class Hotel implements Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "NOME")
+    @Column(name = "NOME", unique = true)
+    @NotNull(message = "Nome é obrigatório")
     private String nome;
 
     @OneToMany

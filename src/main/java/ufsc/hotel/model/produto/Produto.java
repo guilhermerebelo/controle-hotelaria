@@ -1,6 +1,7 @@
 package ufsc.hotel.model.produto;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -14,7 +15,8 @@ public class Produto implements Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "DRSCRICAO")
+    @Column(name = "DRSCRICAO", unique = true)
+    @NotNull(message = "Descrição é obrigatório")
     private String descricao;
 
     @Column(name = "VALOR")

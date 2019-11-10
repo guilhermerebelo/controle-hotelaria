@@ -3,6 +3,7 @@ package ufsc.hotel.model.notafiscal;
 import ufsc.hotel.model.locacao.Locacao;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -17,10 +18,12 @@ public class NotaFiscal implements Serializable {
     private Long id;
 
     @Column(name = "DATA")
+    @NotNull(message = "Data é obrigatório")
     private LocalDate data;
 
     @OneToOne
     @JoinColumn(name = "ID_LOCACAO")
+    @NotNull(message = "Locação é obrigatório")
     private Locacao locacao;
 
     public Long getId() {

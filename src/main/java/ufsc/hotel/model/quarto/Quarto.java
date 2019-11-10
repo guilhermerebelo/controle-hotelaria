@@ -3,6 +3,7 @@ package ufsc.hotel.model.quarto;
 import ufsc.hotel.model.tipoquarto.TipoQuarto;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -15,11 +16,13 @@ public class Quarto implements Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "CODIGO_QUARTO")
+    @Column(name = "CODIGO_QUARTO", unique = true)
+    @NotNull(message = "Código é obrigatório")
     private String codigo;
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPO_QUARTO")
+    @NotNull(message = "Tipo do quarto é obrigatório")
     private TipoQuarto tipoQuarto;
 
     public Long getId() {

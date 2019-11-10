@@ -1,6 +1,7 @@
 package ufsc.hotel.model.pessoa;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -15,9 +16,10 @@ public class PessoaFisica implements Serializable {
     private Long id;
 
     @Column(name = "NOME")
+    @NotNull(message = "Nome é obrigatório")
     private String nome;
 
-    @Column(name = "CPF")
+    @Column(name = "CPF", unique = true)
     private String cpf;
 
     @Column(name = "DATA_NASCIMENTO")

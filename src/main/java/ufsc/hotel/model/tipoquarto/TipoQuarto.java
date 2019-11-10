@@ -3,6 +3,7 @@ package ufsc.hotel.model.tipoquarto;
 import ufsc.hotel.model.produto.Produto;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ public class TipoQuarto implements Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "DESCRICAO")
+    @Column(name = "DESCRICAO", unique = true)
+    @NotNull(message = "Descrição é obrigatório")
     private String descricao;
 
     @Column(name = "VALOR")
+    @NotNull(message = "Diária é obrigatório")
     private BigDecimal diaria;
 
     @ManyToMany

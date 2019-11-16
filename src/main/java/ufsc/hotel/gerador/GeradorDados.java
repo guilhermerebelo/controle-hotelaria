@@ -14,6 +14,8 @@ import ufsc.hotel.model.hospede.HospedeRepository;
 import ufsc.hotel.model.hotel.Hotel;
 import ufsc.hotel.model.hotel.HotelBuilder;
 import ufsc.hotel.model.hotel.HotelRepository;
+import ufsc.hotel.model.locacao.Locacao;
+import ufsc.hotel.model.locacao.LocacaoBuilder;
 import ufsc.hotel.model.locacao.LocacaoRepository;
 import ufsc.hotel.model.pessoa.PessoaFisica;
 import ufsc.hotel.model.pessoa.PessoaFisicaBuilder;
@@ -28,14 +30,19 @@ import ufsc.hotel.model.tipoquarto.TipoQuarto;
 import ufsc.hotel.model.tipoquarto.TipoQuartoBuilder;
 import ufsc.hotel.model.tipoquarto.TipoQuartoRepository;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ufsc.hotel.gerador.TipoEntidade.*;
 
 @Component
 public class GeradorDados {
 
+    //TODO separar em classes
     public static HashMap<TipoEntidade, List<?>> dados = new HashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(GeradorDados.class);
 
@@ -84,6 +91,7 @@ public class GeradorDados {
         gerarPessoaFisica(20);
     }
 
+    @Transactional
     private void gerarPessoaFisica(int total) {
         List<PessoaFisica> pessoaFisicas = new ArrayList<>();
 
@@ -97,9 +105,27 @@ public class GeradorDados {
             pessoaFisicas.add(pessoaFisica);
         }
 
-        dados.put(PESSOA_FISICA, pessoaFisicaRepository.saveAll(pessoaFisicas));
+        dados.put(PESSOA_FISICA, saveAllPessoaFisica(pessoaFisicas));
     }
 
+    private List<PessoaFisica> saveAllPessoaFisica(List<PessoaFisica> pessoaFisicas) {
+        return pessoaFisicas.stream()
+                .map(this::savePessoaFisica)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private PessoaFisica savePessoaFisica(PessoaFisica p) {
+        try {
+            return pessoaFisicaRepository.save(p);
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+            return null;
+        }
+    }
+
+    @Transactional
     private void gerarFuncionario() {
         int TOTAL = 20;
 
@@ -110,18 +136,32 @@ public class GeradorDados {
                 .stream()
                 .map(o -> (PessoaFisica) o)
                 .forEach(pessoaFisica -> {
-                    Funcionario funcionario = funcionarioRepository.save(
-                            FuncionarioBuilder.create()
-                                    .pessoaFisica(pessoaFisica)
-                                    .build()
-                    );
-
-                    entidades.add(funcionario);
+                    entidades.add(FuncionarioBuilder.create()
+                            .pessoaFisica(pessoaFisica)
+                            .build());
                 });
 
-        dados.put(FUNCIONARIO, entidades);
+        dados.put(FUNCIONARIO, saveAllFuncionarios(entidades));
     }
 
+    private List<Funcionario> saveAllFuncionarios(List<Funcionario> entidades) {
+        return entidades.stream()
+                .map(this::saveFuncionario)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private Funcionario saveFuncionario(Funcionario funcionario) {
+        try {
+            return funcionarioRepository.save(funcionario);
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+            return null;
+        }
+    }
+
+    @Transactional
     private void gerarHospede() {
         int TOTAL = 20;
 
@@ -132,29 +172,49 @@ public class GeradorDados {
                 .stream()
                 .map(o -> (PessoaFisica) o)
                 .forEach(pessoaFisica -> {
-                    Hospede hospede = hospedeRepository.save(
-                            HospedeBuilder.create()
-                                    .pessoaFisica(pessoaFisica)
-                                    .build()
-                    );
-
-                    entidades.add(hospede);
+                    entidades.add(HospedeBuilder.create()
+                            .pessoaFisica(pessoaFisica)
+                            .build());
                 });
 
-        dados.put(HOSPEDE, entidades);
+        dados.put(HOSPEDE, salveAllHospede(entidades));
     }
 
+    private List<Hospede> salveAllHospede(List<Hospede> entidades) {
+        return entidades.stream()
+                .map(this::saveHospede)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private Hospede saveHospede(Hospede hospede) {
+        try {
+            return hospedeRepository.save(hospede);
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+            return null;
+        }
+    }
+
+    @Transactional
     private void gerarHotel() {
-        Hotel hotel = hotelRepository.save(
-                HotelBuilder.create()
-                        .nome("Hotel")
-                        .funcionarios((List<Funcionario>) dados.get(FUNCIONARIO))
-                        .build()
-        );
+        try {
+            Hotel hotel = hotelRepository.save(
+                    HotelBuilder.create()
+                            .nome("Hotel")
+                            .funcionarios((List<Funcionario>) dados.get(FUNCIONARIO))
+                            .build()
+            );
 
-        dados.put(HOTEL, Collections.singletonList(hotel));
+            dados.put(HOTEL, Collections.singletonList(hotel));
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+        }
     }
 
+    @Transactional
     private void gerarProduto() {
         List<Produto> produtos = Arrays.asList(
                 ProdutoBuilder.create()
@@ -179,19 +239,54 @@ public class GeradorDados {
                         .build()
         );
 
-        dados.put(PRODUTO, produtoRepository.saveAll(produtos));
+        dados.put(PRODUTO, saveAllProdutos(produtos));
     }
 
+    private List<Produto> saveAllProdutos(List<Produto> entidades) {
+        return entidades.stream()
+                .map(this::saveProduto)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private Produto saveProduto(Produto produto) {
+        try {
+            return produtoRepository.save(produto);
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+            return null;
+        }
+    }
+
+    @Transactional
     private void gerarTipoQuarto() {
         List<TipoQuarto> tipoQuartos = Arrays.asList(
                 createTipoQuarto("Quarto solteiro", (List<Produto>) dados.get(PRODUTO), 100),
-                createTipoQuarto("Quarto solteiro duplo",(List<Produto>) dados.get(PRODUTO), 80),
+                createTipoQuarto("Quarto solteiro duplo", (List<Produto>) dados.get(PRODUTO), 80),
                 createTipoQuarto("Quarto casal", (List<Produto>) dados.get(PRODUTO), 150),
-                createTipoQuarto("Master", (List<Produto>) dados.get(PRODUTO),350),
-                createTipoQuarto("Deluxe",(List<Produto>) dados.get(PRODUTO), 500)
+                createTipoQuarto("Master", (List<Produto>) dados.get(PRODUTO), 350),
+                createTipoQuarto("Deluxe", (List<Produto>) dados.get(PRODUTO), 500)
         );
 
-        dados.put(TIPO_QUARTO, tipoQuartoRepository.saveAll(tipoQuartos));
+        dados.put(TIPO_QUARTO, saveAllTipoQuarto(tipoQuartos));
+    }
+
+    private List<TipoQuarto> saveAllTipoQuarto(List<TipoQuarto> entidades) {
+        return entidades.stream()
+                .map(this::saveTipoQuarto)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private TipoQuarto saveTipoQuarto(TipoQuarto tipoQuato) {
+        try {
+            return tipoQuartoRepository.save(tipoQuato);
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+            return null;
+        }
     }
 
     private TipoQuarto createTipoQuarto(String s, List<Produto> produtos, int i) {
@@ -202,26 +297,108 @@ public class GeradorDados {
                 .build();
     }
 
+    @Transactional
     private void gerarQuarto() {
         int TOTAL = 35;
 
         List<Quarto> entidades = new ArrayList<>();
-        List<TipoQuarto> quartos = (List<TipoQuarto>) dados.get(TIPO_QUARTO);
 
         for (int i = 0; i < TOTAL; i++) {
             Quarto quarto = QuartoBuilder.create()
                     .codigo(JRand.string().digits().length(3).gen())
-                    .tipoQuarto(quartos.get(JRand.natural().range(0, quartos.size() - 1).gen()))
+                    .tipoQuarto((TipoQuarto) randomEntity(TIPO_QUARTO))
                     .build();
 
             entidades.add(quarto);
         }
 
-        dados.put(QUARTO, quartoRepository.saveAll(entidades));
+        dados.put(QUARTO, saveAllQuarto(entidades));
     }
 
+    private List<Quarto> saveAllQuarto(List<Quarto> entidades) {
+        return entidades.stream()
+                .map(this::saveQuarto)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
 
+    private Quarto saveQuarto(Quarto quarto) {
+        try {
+            return quartoRepository.save(quarto);
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+            return null;
+        }
+    }
+
+    @Transactional
     private void gerarLocacao() {
+        int TOTAL = 150;
+        List<Locacao> entidades = new ArrayList<>();
 
+        for (int i = 0; i < TOTAL; i++) {
+            Integer totalDiasLocacao = randomNumber(1, 15);
+
+            LocalDate inicioLocacao = gerarDataRandomica();
+            LocalDate finalLocacao = inicioLocacao.plusDays(totalDiasLocacao);
+
+            List<Produto> produtos = new ArrayList<>();
+            for (int j = 0; j < randomNumber(1, dados.get(PRODUTO).size() - 1); j++) {
+                produtos.add((Produto) randomEntity(PRODUTO));
+            }
+
+            entidades.add(gerarLocacao(inicioLocacao, finalLocacao, produtos));
+        }
+
+        dados.put(LOCACAO, saveAllLocacao(entidades));
+    }
+
+    private List<Locacao> saveAllLocacao(List<Locacao> entidades) {
+        return entidades.stream()
+                .map(this::saveLocacao)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private Locacao saveLocacao(Locacao locacao) {
+        try {
+            return locacaoRepository.save(locacao);
+        } catch (RuntimeException e) {
+            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.warn(e.getMessage());
+            return null;
+        }
+    }
+
+    private Locacao gerarLocacao(LocalDate inicioLocacao, LocalDate finalLocacao, List<Produto> produtos) {
+        return LocacaoBuilder.create()
+                .dataInicial(Date.from(inicioLocacao.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .dataFinal(Date.from(finalLocacao.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .quarto((Quarto) randomEntity(QUARTO))
+                .hospede((Hospede) randomEntity(HOSPEDE))
+                .pagante((PessoaFisica) randomEntity(PESSOA_FISICA))
+                .funcionarioIniciouLocacao((Funcionario) randomEntity(FUNCIONARIO))
+                .funcionarioFinalizouLocacao((Funcionario) randomEntity(FUNCIONARIO))
+                .produtoConsumidos(produtos)
+                .build();
+    }
+
+    private LocalDate gerarDataRandomica() {
+        Random random = new Random();
+        int minDay = (int) LocalDate.of(2018, 1, 1).toEpochDay();
+        int maxDay = (int) LocalDate.of(2019, 10, 1).toEpochDay();
+        long randomDay = minDay + random.nextInt(maxDay - minDay);
+
+        return LocalDate.ofEpochDay(randomDay);
+    }
+
+    private Object randomEntity(TipoEntidade tipoEntidade) {
+        List<?> objects = dados.get(tipoEntidade);
+        return objects.get(randomNumber(0, objects.size() - 1));
+    }
+
+    private Integer randomNumber(int n1, int n2) {
+        return JRand.natural().range(n1, n2).gen();
     }
 }

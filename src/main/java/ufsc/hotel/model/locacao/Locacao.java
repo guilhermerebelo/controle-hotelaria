@@ -67,7 +67,8 @@ public class Locacao implements Serializable {
     )
     private List<Produto> produtoConsumidos = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "locacao")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_LOCACAO")
     @NotNull(message = "Nota fiscal é obrigatório")
     private NotaFiscal notaFiscal;
 

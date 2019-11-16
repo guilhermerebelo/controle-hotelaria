@@ -1,7 +1,5 @@
 package ufsc.hotel.model.notafiscal;
 
-import ufsc.hotel.model.locacao.Locacao;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -22,10 +20,6 @@ public class NotaFiscal implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date data;
 
-    @OneToOne
-    @JoinColumn(name = "ID_LOCACAO")
-    private Locacao locacao;
-
     public Long getId() {
         return id;
     }
@@ -40,13 +34,5 @@ public class NotaFiscal implements Serializable {
 
     public void setData(Date data) {
         this.data = data;
-    }
-
-    public Locacao getLocacao() {
-        return locacao;
-    }
-
-    public void setLocacao(Locacao locacao) {
-        this.locacao = locacao;
     }
 }

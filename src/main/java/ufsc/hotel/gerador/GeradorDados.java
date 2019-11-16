@@ -32,7 +32,6 @@ import ufsc.hotel.model.tipoquarto.TipoQuarto;
 import ufsc.hotel.model.tipoquarto.TipoQuartoBuilder;
 import ufsc.hotel.model.tipoquarto.TipoQuartoRepository;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -93,7 +92,6 @@ public class GeradorDados {
         gerarPessoaFisica(20);
     }
 
-    @Transactional
     private void gerarPessoaFisica(int total) {
         List<PessoaFisica> pessoaFisicas = new ArrayList<>();
 
@@ -127,7 +125,6 @@ public class GeradorDados {
         }
     }
 
-    @Transactional
     private void gerarFuncionario() {
         int TOTAL = 20;
 
@@ -163,7 +160,6 @@ public class GeradorDados {
         }
     }
 
-    @Transactional
     private void gerarHospede() {
         int TOTAL = 20;
 
@@ -199,7 +195,6 @@ public class GeradorDados {
         }
     }
 
-    @Transactional
     private void gerarHotel() {
         try {
             Hotel hotel = hotelRepository.save(
@@ -216,7 +211,6 @@ public class GeradorDados {
         }
     }
 
-    @Transactional
     private void gerarProduto() {
         List<Produto> produtos = Arrays.asList(
                 ProdutoBuilder.create()
@@ -261,7 +255,6 @@ public class GeradorDados {
         }
     }
 
-    @Transactional
     private void gerarTipoQuarto() {
         List<TipoQuarto> tipoQuartos = Arrays.asList(
                 createTipoQuarto("Quarto solteiro", (List<Produto>) dados.get(PRODUTO), 100),
@@ -299,7 +292,6 @@ public class GeradorDados {
                 .build();
     }
 
-    @Transactional
     private void gerarQuarto() {
         int TOTAL = 35;
 
@@ -334,7 +326,6 @@ public class GeradorDados {
         }
     }
 
-    @Transactional
     private void gerarLocacao() {
         int TOTAL = 150;
         List<Locacao> entidades = new ArrayList<>();

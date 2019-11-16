@@ -2,11 +2,11 @@ package ufsc.hotel.model.notafiscal;
 
 import ufsc.hotel.model.locacao.Locacao;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public final class NotaFiscalBuilder {
     private Long id;
-    private LocalDate data;
+    private Date data;
     private Locacao locacao;
 
     private NotaFiscalBuilder() {
@@ -21,7 +21,7 @@ public final class NotaFiscalBuilder {
         return this;
     }
 
-    public NotaFiscalBuilder data(LocalDate data) {
+    public NotaFiscalBuilder data(Date data) {
         this.data = data;
         return this;
     }

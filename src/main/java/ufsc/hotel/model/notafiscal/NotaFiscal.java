@@ -5,7 +5,7 @@ import ufsc.hotel.model.locacao.Locacao;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "NOTA_FISCAL")
@@ -19,7 +19,8 @@ public class NotaFiscal implements Serializable {
 
     @Column(name = "DATA")
     @NotNull(message = "Data é obrigatório")
-    private LocalDate data;
+    @Temporal(TemporalType.DATE)
+    private Date data;
 
     @OneToOne
     @JoinColumn(name = "ID_LOCACAO")
@@ -33,11 +34,11 @@ public class NotaFiscal implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(Date data) {
         this.data = data;
     }
 

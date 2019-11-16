@@ -17,6 +17,8 @@ import ufsc.hotel.model.hotel.HotelRepository;
 import ufsc.hotel.model.locacao.Locacao;
 import ufsc.hotel.model.locacao.LocacaoBuilder;
 import ufsc.hotel.model.locacao.LocacaoRepository;
+import ufsc.hotel.model.notafiscal.NotaFiscal;
+import ufsc.hotel.model.notafiscal.NotaFiscalBuilder;
 import ufsc.hotel.model.pessoa.PessoaFisica;
 import ufsc.hotel.model.pessoa.PessoaFisicaBuilder;
 import ufsc.hotel.model.pessoa.PessoaFisicaRepository;
@@ -42,9 +44,11 @@ import static ufsc.hotel.gerador.TipoEntidade.*;
 @Component
 public class GeradorDados {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeradorDados.class);
+    private static final String MESSAGE_ERROR = "Erro ao tentar persitir %s ";
+
     //TODO separar em classes
     public static HashMap<TipoEntidade, List<?>> dados = new HashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(GeradorDados.class);
 
     @Autowired
     private HotelRepository hotelRepository;
@@ -80,8 +84,6 @@ public class GeradorDados {
             this.gerarTipoQuarto();
             this.gerarQuarto();
             this.gerarLocacao();
-
-            LOGGER.info("Dados gerados com sucesso!");
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
@@ -119,7 +121,7 @@ public class GeradorDados {
         try {
             return pessoaFisicaRepository.save(p);
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "pessoa física"));
             LOGGER.warn(e.getMessage());
             return null;
         }
@@ -135,11 +137,11 @@ public class GeradorDados {
         dados.get(PESSOA_FISICA)
                 .stream()
                 .map(o -> (PessoaFisica) o)
-                .forEach(pessoaFisica -> {
-                    entidades.add(FuncionarioBuilder.create()
-                            .pessoaFisica(pessoaFisica)
-                            .build());
-                });
+                .forEach(pessoaFisica ->
+                        entidades.add(FuncionarioBuilder.create()
+                                .pessoaFisica(pessoaFisica)
+                                .build())
+                );
 
         dados.put(FUNCIONARIO, saveAllFuncionarios(entidades));
     }
@@ -155,7 +157,7 @@ public class GeradorDados {
         try {
             return funcionarioRepository.save(funcionario);
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "funcionário"));
             LOGGER.warn(e.getMessage());
             return null;
         }
@@ -171,11 +173,11 @@ public class GeradorDados {
         dados.get(PESSOA_FISICA)
                 .stream()
                 .map(o -> (PessoaFisica) o)
-                .forEach(pessoaFisica -> {
-                    entidades.add(HospedeBuilder.create()
-                            .pessoaFisica(pessoaFisica)
-                            .build());
-                });
+                .forEach(pessoaFisica ->
+                        entidades.add(HospedeBuilder.create()
+                                .pessoaFisica(pessoaFisica)
+                                .build())
+                );
 
         dados.put(HOSPEDE, salveAllHospede(entidades));
     }
@@ -191,7 +193,7 @@ public class GeradorDados {
         try {
             return hospedeRepository.save(hospede);
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "hóspede"));
             LOGGER.warn(e.getMessage());
             return null;
         }
@@ -209,7 +211,7 @@ public class GeradorDados {
 
             dados.put(HOTEL, Collections.singletonList(hotel));
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "hotel"));
             LOGGER.warn(e.getMessage());
         }
     }
@@ -253,7 +255,7 @@ public class GeradorDados {
         try {
             return produtoRepository.save(produto);
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "produto"));
             LOGGER.warn(e.getMessage());
             return null;
         }
@@ -279,11 +281,11 @@ public class GeradorDados {
                 .collect(Collectors.toList());
     }
 
-    private TipoQuarto saveTipoQuarto(TipoQuarto tipoQuato) {
+    private TipoQuarto saveTipoQuarto(TipoQuarto tipoQuarto) {
         try {
-            return tipoQuartoRepository.save(tipoQuato);
+            return tipoQuartoRepository.save(tipoQuarto);
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "tipo de quarto"));
             LOGGER.warn(e.getMessage());
             return null;
         }
@@ -326,7 +328,7 @@ public class GeradorDados {
         try {
             return quartoRepository.save(quarto);
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "quarto"));
             LOGGER.warn(e.getMessage());
             return null;
         }
@@ -348,7 +350,11 @@ public class GeradorDados {
                 produtos.add((Produto) randomEntity(PRODUTO));
             }
 
-            entidades.add(gerarLocacao(inicioLocacao, finalLocacao, produtos));
+            NotaFiscal notaFiscal = NotaFiscalBuilder.create()
+                    .data(Date.from(finalLocacao.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                    .build();
+
+            entidades.add(gerarLocacao(inicioLocacao, finalLocacao, produtos, notaFiscal));
         }
 
         dados.put(LOCACAO, saveAllLocacao(entidades));
@@ -365,13 +371,13 @@ public class GeradorDados {
         try {
             return locacaoRepository.save(locacao);
         } catch (RuntimeException e) {
-            LOGGER.info("Erro ao tentar persitir algum dado");
+            LOGGER.info(String.format(MESSAGE_ERROR, "locação"));
             LOGGER.warn(e.getMessage());
             return null;
         }
     }
 
-    private Locacao gerarLocacao(LocalDate inicioLocacao, LocalDate finalLocacao, List<Produto> produtos) {
+    private Locacao gerarLocacao(LocalDate inicioLocacao, LocalDate finalLocacao, List<Produto> produtos, NotaFiscal notaFiscal) {
         return LocacaoBuilder.create()
                 .dataInicial(Date.from(inicioLocacao.atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .dataFinal(Date.from(finalLocacao.atStartOfDay(ZoneId.systemDefault()).toInstant()))
@@ -381,6 +387,7 @@ public class GeradorDados {
                 .funcionarioIniciouLocacao((Funcionario) randomEntity(FUNCIONARIO))
                 .funcionarioFinalizouLocacao((Funcionario) randomEntity(FUNCIONARIO))
                 .produtoConsumidos(produtos)
+                .notaFiscal(notaFiscal)
                 .build();
     }
 

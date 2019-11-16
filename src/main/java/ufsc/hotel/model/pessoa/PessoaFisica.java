@@ -3,7 +3,7 @@ package ufsc.hotel.model.pessoa;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "PESSOA_FISICA")
@@ -23,7 +23,8 @@ public class PessoaFisica implements Serializable {
     private String cpf;
 
     @Column(name = "DATA_NASCIMENTO")
-    private LocalDate dataNascimento;
+    @Temporal(TemporalType.DATE)
+    private Date dataNascimento;
 
     public Long getId() {
         return id;
@@ -49,11 +50,11 @@ public class PessoaFisica implements Serializable {
         this.cpf = cpf;
     }
 
-    public LocalDate getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }

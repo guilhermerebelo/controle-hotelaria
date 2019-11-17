@@ -83,7 +83,7 @@ public class DashboardController {
     @GetMapping("faturamento-anual-quartos")
     public List faturamentoAnualQuartos() {
         Query query = em.createNativeQuery(
-                "select sum(c_ano.valor) as faturamento from " +
+                "select sum(c_ano.valor) as faturamento_anual_quarto from " +
                         "(select * from locacao as l  " +
                         "inner join quarto as q  " +
                         "on l.id_quarto = q.id_tipo_quarto " +

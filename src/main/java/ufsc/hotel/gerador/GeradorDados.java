@@ -162,7 +162,7 @@ public class GeradorDados {
     }
 
     private void gerarHospede() {
-        int TOTAL = 20;
+        int TOTAL = 150;
 
         List<Hospede> entidades = new ArrayList<>();
         gerarPessoaFisica(TOTAL);
@@ -391,7 +391,7 @@ public class GeradorDados {
     private LocalDate gerarDataRandomica() {
         Random random = new Random();
         int minDay = (int) LocalDate.of(2017, 1, 1).toEpochDay();
-        int maxDay = (int) LocalDate.of(2019, 10, 1).toEpochDay();
+        int maxDay = (int) LocalDate.of(2019, 11, 30).toEpochDay();
         long randomDay = minDay + random.nextInt(maxDay - minDay);
 
         return LocalDate.ofEpochDay(randomDay);

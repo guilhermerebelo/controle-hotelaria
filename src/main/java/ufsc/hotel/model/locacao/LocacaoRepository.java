@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface LocacaoRepository extends JpaRepository<Locacao, Long> {
 
-    @Query("select l from Locacao l where not ((l.dataInicial > :dataFinal or l.dataFinal < :dataInicial) and (l.quarto = :quarto))")
+    @Query("select l from Locacao l where not (l.dataInicial > :dataFinal or l.dataFinal < :dataInicial) and (l.quarto = :quarto)")
     List<Locacao> findLocacaoEmAndamento(@Param("dataInicial") Date dataInicial,
                                          @Param("dataFinal") Date dataFinal,
                                          @Param("quarto") Quarto quarto);

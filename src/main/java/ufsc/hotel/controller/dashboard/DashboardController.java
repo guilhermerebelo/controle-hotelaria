@@ -30,8 +30,8 @@ public class DashboardController {
                         "inner join pessoa_fisica as p " +
                         "on h.id_pessoa_fisica = p.id) as c1 " +
                         "group by nome " +
-                        "order by total desc " +
-                        "limit 10");
+                        "order by total desc, nome " +
+                        "limit 7");
 
         return query.getResultList();
     }
@@ -51,17 +51,16 @@ public class DashboardController {
         return query.getResultList();
     }
 
-    @GetMapping("funcionario-mais-locacoes-ultimos-seis-meses")
-    public List funcionarioMaisLocacoesUltimosSeisMeses() {
+    @GetMapping("funcionario-mais-locacoes-mes")
+    public List funcionarioMaisLocacoesMes() {
         Query query = em.createNativeQuery(
                 "select count(r.mes) as total, nome, mes from " +
                         "(select to_char(l.data_inicial, 'MM/YYYY') as mes, p.nome, p.cpf from locacao as l  " +
                         "inner join funcionario as f on l.id_funcionario_inicio_locacao = f.id " +
                         "inner join pessoa_fisica as p on f.id_pessoa_fisica = p.id " +
-                        "where l.data_inicial > (now() - interval '7 month')) as r  " +
+                        "where to_char(l.data_inicial, 'MM/YYYY') = to_char((now()), 'MM/YYYY')) as r " +
                         "group by mes, nome " +
-                        "order by total desc " +
-                        "limit 10");
+                        "order by total");
 
         return query.getResultList();
     }
@@ -81,8 +80,8 @@ public class DashboardController {
         return query.getResultList();
     }
 
-    @GetMapping("faturamento-anual")
-    public List faturamentoAnual() {
+    @GetMapping("faturamento-anual-quartos")
+    public List faturamentoAnualQuartos() {
         Query query = em.createNativeQuery(
                 "select sum(c_ano.valor) as faturamento from " +
                         "(select * from locacao as l  " +

@@ -127,7 +127,7 @@ public class GeradorDados {
     }
 
     private void gerarFuncionario() {
-        int TOTAL = 20;
+        int TOTAL = 10;
 
         List<Funcionario> entidades = new ArrayList<>();
         gerarPessoaFisica(TOTAL);
@@ -162,7 +162,7 @@ public class GeradorDados {
     }
 
     private void gerarHospede() {
-        int TOTAL = 150;
+        int TOTAL = 250;
 
         List<Hospede> entidades = new ArrayList<>();
         gerarPessoaFisica(TOTAL);
@@ -328,7 +328,7 @@ public class GeradorDados {
     }
 
     private void gerarLocacao() {
-        int TOTAL = 350;
+        int TOTAL = 2500;
         List<Locacao> entidades = new ArrayList<>();
 
         for (int i = 0; i < TOTAL; i++) {
@@ -390,7 +390,7 @@ public class GeradorDados {
 
     private LocalDate gerarDataRandomica() {
         Random random = new Random();
-        int minDay = (int) LocalDate.of(2017, 1, 1).toEpochDay();
+        int minDay = (int) LocalDate.of(2010, 1, 1).toEpochDay();
         int maxDay = (int) LocalDate.of(2019, 11, 30).toEpochDay();
         long randomDay = minDay + random.nextInt(maxDay - minDay);
 

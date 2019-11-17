@@ -32,6 +32,7 @@ import ufsc.hotel.model.tipoquarto.TipoQuarto;
 import ufsc.hotel.model.tipoquarto.TipoQuartoBuilder;
 import ufsc.hotel.model.tipoquarto.TipoQuartoRepository;
 
+import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -327,7 +328,7 @@ public class GeradorDados {
     }
 
     private void gerarLocacao() {
-        int TOTAL = 150;
+        int TOTAL = 350;
         List<Locacao> entidades = new ArrayList<>();
 
         for (int i = 0; i < TOTAL; i++) {
@@ -360,6 +361,11 @@ public class GeradorDados {
 
     private Locacao saveLocacao(Locacao locacao) {
         try {
+            List<Locacao> locacaoEmAndamento = locacaoRepository.findLocacaoEmAndamento(locacao.getDataInicial(), locacao.getDataFinal(), locacao.getQuarto());
+            if (!locacaoEmAndamento.isEmpty()) {
+                throw new ValidationException("Já existe uma locação em andamento para esse quarto");
+            }
+
             return locacaoRepository.save(locacao);
         } catch (RuntimeException e) {
             LOGGER.info(String.format(MESSAGE_ERROR, "locação"));
@@ -384,7 +390,7 @@ public class GeradorDados {
 
     private LocalDate gerarDataRandomica() {
         Random random = new Random();
-        int minDay = (int) LocalDate.of(2018, 1, 1).toEpochDay();
+        int minDay = (int) LocalDate.of(2017, 1, 1).toEpochDay();
         int maxDay = (int) LocalDate.of(2019, 10, 1).toEpochDay();
         long randomDay = minDay + random.nextInt(maxDay - minDay);
 

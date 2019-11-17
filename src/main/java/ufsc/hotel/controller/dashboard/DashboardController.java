@@ -1,6 +1,5 @@
 package ufsc.hotel.controller.dashboard;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +15,9 @@ import java.util.List;
 public class DashboardController {
 
     private final EntityManager em;
-    private final ObjectMapper mapper;
 
-    public DashboardController(EntityManager em,
-                               ObjectMapper mapper) {
+    public DashboardController(EntityManager em) {
         this.em = em;
-        this.mapper = mapper;
     }
 
     @GetMapping("melhores-clientes")
@@ -37,12 +33,11 @@ public class DashboardController {
                         "order by total desc " +
                         "limit 10");
 
-        List resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 
-    @GetMapping("hospedes-ano")
-    public List hospedesAno() {
+    @GetMapping("total-hospedes-ano")
+    public List totalHospedesAno() {
         Query query = em.createNativeQuery(
                 "select count(*), consultaAno.ano from (select date_part('year', CAST(l.data_inicial AS DATE)) as ano, p.nome, p.cpf " +
                         "from locacao as l " +
@@ -53,8 +48,7 @@ public class DashboardController {
                         "group by ano " +
                         "order by ano asc");
 
-        List resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 
     @GetMapping("funcionario-mais-locacoes-ultimos-seis-meses")
@@ -69,8 +63,7 @@ public class DashboardController {
                         "order by total desc " +
                         "limit 10");
 
-        List resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 
     @GetMapping("faturamento-produto-mes")
@@ -85,11 +78,10 @@ public class DashboardController {
                         "group by drscricao " +
                         "order by valor desc");
 
-        List resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 
-    @GetMapping("faturamneto-anual")
+    @GetMapping("faturamento-anual")
     public List faturamentoAnual() {
         Query query = em.createNativeQuery(
                 "select sum(c_ano.valor) as faturamento from " +
@@ -100,22 +92,22 @@ public class DashboardController {
                         "on q.id_tipo_quarto = tq.id " +
                         "where date_part('year', CAST(l.data_inicial AS DATE)) = '2019') as c_ano");
 
-        List resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 
-    @GetMapping("faturamneto-ultimos-doze-meses")
+    @GetMapping("faturamento-ultimos-doze-meses")
     public List faturamnetoUltimosDozeMeses() {
         Query query = em.createNativeQuery(
                 "select sum(f_total.valor) from " +
                         "(select sum(c1.valor) as valor from  " +
-                        "(select * from locacao_produto as lp inner join produto as pro on pro.id = lp.produto where lp.locacao in (select id from locacao as l where date_part('year', CAST(l.data_inicial AS DATE)) = '2019')) as c1  " +
+                        "(select * from locacao_produto as lp inner join produto as pro on pro.id = lp.produto " +
+                        "where lp.locacao in (select id from locacao as l where date_part('year', CAST(l.data_inicial AS DATE)) = '2019')) as c1  " +
                         "union " +
                         "select sum(c2.valor) as faturamento from " +
-                        "(select * from locacao as l inner join quarto as q on l.id_quarto = q.id_tipo_quarto inner join tipo_quarto as tq on q.id_tipo_quarto = tq.id where date_part('year', CAST(l.data_inicial AS DATE)) = '2019') as c2) as f_total");
+                        "(select * from locacao as l inner join quarto as q on l.id_quarto = q.id_tipo_quarto inner join tipo_quarto as tq on q.id_tipo_quarto = tq.id " +
+                        "where date_part('year', CAST(l.data_inicial AS DATE)) = '2019') as c2) as f_total");
 
-        List resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 
     @GetMapping("faturamento-anual-categoria-quarto")
@@ -131,7 +123,6 @@ public class DashboardController {
                         "group by descricao " +
                         "order by valorTotal desc");
 
-        List resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 }

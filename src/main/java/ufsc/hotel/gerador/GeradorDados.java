@@ -1,5 +1,5 @@
 package ufsc.hotel.gerador;
-
+/*
 import me.xdrop.jrand.JRand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -406,3 +406,4 @@ public class GeradorDados {
         return JRand.natural().range(n1, n2).gen();
     }
 }
+*/
